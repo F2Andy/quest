@@ -334,3 +334,8 @@ Some interesting threads from the forum.
 
 [Injecting stylesheets (CSS in a string attribute on the game object)](http://forum.textadventures.co.uk/viewtopic.php?f=18&t=4747)
 
+[Adding command links to the bottom of the screen](http://forum.textadventures.co.uk/viewtopic.php?f=18&t=4681)
+
+[JQuery dialogue box](http://forum.textadventures.co.uk/viewtopic.php?f=18&t=4822)
+
+[Additional inventory pane](http://forum.textadventures.co.uk/viewtopic.php?f=18&t=3789)
