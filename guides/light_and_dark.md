@@ -2,7 +2,7 @@
 
 ---
 layout: index
-title: Using and Coding Functions
+title: Handling Light and Dark
 ---
 
 
