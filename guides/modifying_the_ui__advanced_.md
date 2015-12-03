@@ -15,7 +15,7 @@ To create the function, right click in the left pane, and select "New function".
 Rename the interface features
 -----------------------------
 
-*As of Quest 5.6, this seems to be broken, but should be fixed in 5.7.*
+*In some versions of Quest 5.6, this seems to be broken, but was fixed in 5.6.2.*
 
 You can rename the features of the interface using the *request* script command. It takes two parameters, the first is SetInterfaceString (note that this is not a string, so has no quote marks), the second is the instruction, i.e, the name of the feature, an equals sign and the new text. That is a string, so needs to be in double quotes. Like this:
 
@@ -239,6 +239,14 @@ You also have access to web fonts. These are provided on-line by Google, and by 
     msg("This is in Wallpoet again")
 
 
+The "Continue" link
+-------------------
+
+You can change in the colour of hyperlinks on the Display tab of the game object, but it does not affect the "Continue" message when the game waits for the player to press a button, because that is actually part of the command line, not the output text. However, you can change it with JQuery, like this:
+
+    JS.eval ("$('#txtCommandDiv a').css('color', 'orange');")
+
+
 Reordering the Panes
 --------------------
 
@@ -258,6 +266,14 @@ In Quest, it will look like this (I am moving the status variables up as well, t
     JS.eval ("$('#statusVarsAccordion').insertBefore('#inventoryLabel')")
 
 
+Removing Just One Pane
+----------------------
+
+Perhaps you just want to get rid of one of the panes altogether. This example removes he compass by setting the CSS "display" property to "none":
+
+    JS.eval ("$('#compassLabel').css('display', 'none')")
+    JS.eval ("$('#compassAccordion').css('display', 'none')")
+
 Changing the Ending
 -------------------
 
@@ -273,6 +289,36 @@ You can also change what gets displayed, using the JQuery html method. In this e
     s = s + "\" />');"
     JS.eval (s)
     finish
+
+
+Changing the Arrows
+-------------------
+
+The arrows in the compass rose and the triangles to the left of the panes are icons that are defined in JQuery. To change their color, you need to replace the image file (they are all in one file).
+
+You an get an image file with the right colours, from here:
+
+http://download.jqueryui.com/themeroller/images/ui-icons_800080_256x240.png
+
+You can change the number 800080 to the RGB colour what you want (I guess the file server creates the images on the fly, and will accept any value, but that may not be the case), this is a dark purple I was trying. Save the file in your game folder.
+
+Then you just need to do this to get the new icons in your game (again, modifying the number for your downloaded file):
+
+    JS.eval ("$('.ui-icon').css('background-image', 'url(" + GetFileURL("ui-icons_800080_256x240.png") + ")')")
+
+Once you have the file, you could edit it to change the shape of the arrows too, or make them multicoloured.
+
+
+Changing the Status Bar
+-----------------------
+
+How do you change the colour of the status bar across the top? Its identity is "status", but if you set its background color like this, nothing will happen:
+
+    JS.eval ("$('#status').css('background-color', 'black')")
+
+The reason is that there is an image there, and you need to get rid of that first:
+
+    JS.eval ("$('#status').css('background-image', 'none')")
 
 
 Other Tricks
