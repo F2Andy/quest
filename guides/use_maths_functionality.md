@@ -197,7 +197,56 @@ Okay, so you want to see this is action?
 
 [1](http://play.textadventures.co.uk/Play.aspx?id=drlmaqlj1kswth91oz0qja)
 
+
+Strings
+---------------
+
+You can pretty much anything to a string, and get a new string.
+
+    l = NewObjectList()
+    list add(l, player)
+    msg("My list is " + l)
+    -> My list is List: Object: player; 
+
+
+Lists
+-----
+
+You can also add and subtract list.
+
+A quick way to get a string list is the Split command (especially useful for menu options)
+
+    l1 = Split("one|two|three", "|")
+    msg(l1)
+    -> List: one; two; three; 
+
+Now we have a list, we can add strings to it and other string lists:
+
+    l2 = "zero" + l1 + "four"
+    msg(l2)
+    -> List: zero; one; two; three; four; 
+    l3 = l2 - "two"
+    msg(l3)
+    -> List: zero; one; three; four; 
+    l4 = l1 + l3
+    msg(l4)
+    -> List: one; two; three; zero; one; three; four; [/code]
+
+Also works for object lists:
+
+    ol = NewObjectList()
+    ol2 = ol + player
+    msg(ol2)
+
+And mixed lists, here in one step I add an object and a string:
+
+    l = NewList()
+    l2 = l + player + "player"
+
+You cannot subtract one list from another, and it does not work for dictionaries.
+
+
 Credits
 -------
 
-Jay Nabonne discovered most of this on the Quest forum.
+Jay Nabonne discovered much of this on the Quest forum.

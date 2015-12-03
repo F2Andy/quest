@@ -41,6 +41,7 @@ Be prepared to see code - but not write it. Most of these have blocks of code, b
 -   [Implement drop...](implement_drop....html)
 -   [Make a text adventure look like a game book](text_adventure_gamebook.html)
 -   [Use InvisiClues for Help](invisiclues.html)
+-   [Handle light and dark](light_and_dark.html)
 
 
 Templates
@@ -59,16 +60,17 @@ Intermediate
 
 Some simple coding required...
 
--   [Ask a question](ask_a_question.html) (like as a riddle)
+-   [Ask a question](ask_a_question.html) (like a riddle)
 -   [Adding an introduction](adding_introduction_text.html)
 -   [Walkthroughs](walkthroughs.html)
--   [Running a script when an attribute changes](running_a_script_when_an_attribute_changes.html)
+-   [Running a script when an attribute changes](change_scripts.html)
 -   [Using Lists](using_lists.html)
 -   [Pattern Matching](pattern_matching.html)
 -   [Add Ambience](ambience.html) (random background text)
 -   [Use verbs effectively](using_verbs.html)
 -   [A Hint System](a_hint_system.html)
 -   [Turn-based events](turn_based_events.html)
+-   [Control how images are displayed](imagedisplay.html)
 
 
 Advanced
