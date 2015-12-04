@@ -60,6 +60,7 @@ Intermediate
 
 Some simple coding required...
 
+-   [The "parent" attribute](parent.html) (check and set where things are)
 -   [Ask a question](ask_a_question.html) (like a riddle)
 -   [Adding an introduction](adding_introduction_text.html)
 -   [Walkthroughs](walkthroughs.html)
