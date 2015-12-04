@@ -60,6 +60,7 @@ Intermediate
 
 Some simple coding required...
 
+-   [Start Coding in Quest](coding.html) (a gentle introductin!))
 -   [The "parent" attribute](parent.html) (check and set where things are)
 -   [Ask a question](ask_a_question.html) (like a riddle)
 -   [Adding an introduction](adding_introduction_text.html)
@@ -87,7 +88,7 @@ For those happy to use code.
 -   [Second Inventory Pane](second_inventory_pane__advanced_.html) (listing spells for your magic system)
 -   [Modifying the UI](modifying_the_ui__advanced_.html)
 -   [Javascript](javascript.html)
--   [Use maths functionality](use_maths_functionality.html)
+-   [Using maths functionality](use_maths_functionality.html)
 
 
 Gamebooks
