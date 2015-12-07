@@ -26,6 +26,7 @@ Easy to implement using only the GUI.
 -   [Security code to unlock door](unlockdoor.html)
 -   [Hidden/Invisible exit](hiddenexit.html)
 -   [Implementing components of an object](implementing_components_of_an_object.html)
+-   [Upload you game](upload.html)
 
 
 Basic
