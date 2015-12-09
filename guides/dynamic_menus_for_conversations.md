@@ -3,6 +3,10 @@ layout: index
 title: Dynamic Menus for Conversations
 ---
 
+A convient way to create interactive conversations.
+
+Contributed by: The Pixie
+
 This is a way to set up conversations in a game. The player types "Talk To <character>" and is presented with a menu of available topics, but the topics change over the course of the game. For example, once the player has the key, the menu choice "Where is key" is no longer displayed.
 
 This kind of follows on from the page on [Conversations](conversations.html), and uses the same example, so you might like to briefly look at that.
