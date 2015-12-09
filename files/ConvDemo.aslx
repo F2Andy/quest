@@ -1,11 +1,11 @@
-<!--Saved by Quest 5.6.5510.29036-->
+<!--Saved by Quest 5.6.5783.24153-->
 <asl version="550">
   <include ref="English.aslx" />
   <include ref="Core.aslx" />
   <include ref="ConvLib.aslx" />
   <game name="Conversation Tester">
     <gameid>0be5c6ce-c7a0-43fb-836c-6ce248a2ef4d</gameid>
-    <version>1.1</version>
+    <version>1.0</version>
     <turn type="int">0</turn>
     <statusattributes type="stringdictionary" />
     <help type="list" />
@@ -15,6 +15,8 @@
         msg ("Philippa follows you.")
       }
     </roomenter>
+    <start type="script">
+    </start>
   </game>
   <object name="room">
     <inherit name="editor_room" />
@@ -29,28 +31,33 @@
     </object>
     <object name="teapot">
       <inherit name="editor_object" />
+      <take />
       <break type="script">
         do (break_teapot, "script")
       </break>
-      <take />
     </object>
     <object name="philippa">
       <inherit name="editor_object" />
       <inherit name="female" />
       <inherit name="talkingchar" />
+      <activeconversations />
+      <exchange><![CDATA['Hi,' you say to the girl. 'What's your name?'<br/>'I'm Philippa.']]></exchange>
+      <forcedconversations />
       <greet type="script">
-        msg ("'Hi,' you say to Philippa.")
-        msg ("'Hi yourself.'")
+        this.alias = "Philippa"
       </greet>
       <ask type="scriptdictionary" />
+      <alias>girl</alias>
       <object name="philippa_key">
         <inherit name="editor_object" />
         <inherit name="startingtopic" />
-        <alias>Key</alias>
-        <nowshow type="list" />
+        <alias>Where is the key</alias>
+        <exchange><![CDATA['Hi,' you say to Philippa, 'can you help me find the key to this door?'<br/>'Sure, you need to look in the bedroom.']]></exchange>
+        <nowshow type="stringlist">
+          <value>philippa_key_again</value>
+        </nowshow>
+        <hideafter type="boolean">false</hideafter>
         <talk type="script">
-          msg ("'Hi,' you say to Philippa, 'can you help me find the key to this door?'")
-          msg ("'Sure, you need to look in the bedroom.'")
         </talk>
       </object>
       <object name="philippa_key_again">
@@ -58,9 +65,8 @@
         <inherit name="topic" />
         <alias>Key</alias>
         <hideafter type="boolean">false</hideafter>
+        <exchange><![CDATA['Hi again,' you say to Philippa, 'can you help me find the key to this door?'<br/>'Have you tried looking in the bedroom yet?']]></exchange>
         <talk type="script">
-          msg ("'Hi again,' you say to Philippa, 'can you help me find the key to this door?'")
-          msg ("'Have you tried looking in the bedroom yet?'")
         </talk>
       </object>
       <object name="philippa_got_key">
@@ -84,12 +90,12 @@
       <object name="philippa_follow">
         <inherit name="editor_object" />
         <inherit name="startingtopic" />
+        <alias>Follow me</alias>
         <talk type="script">
           msg ("'Follow me!'")
           msg ("'Well... okay then.'")
           philippa.following = true
         </talk>
-        <alias>Follow me</alias>
       </object>
       <object name="philippa_go_out_with_me">
         <inherit name="editor_object" />
@@ -100,6 +106,13 @@
           msg ("'Will you go out with me?'")
           msg ("'No!'")
         </talk>
+      </object>
+      <object name="philippa_bye">
+        <inherit name="editor_object" />
+        <inherit name="startingtopic" />
+        <terminal />
+        <exchange>'Bye.'</exchange>
+        <alias>Bye!</alias>
       </object>
     </object>
     <object name="key">
@@ -114,6 +127,24 @@
     <exit alias="east" to="room2">
       <inherit name="eastdirection" />
     </exit>
+    <object name="boris">
+      <inherit name="editor_object" />
+      <inherit name="talkingchar" />
+      <exchange><![CDATA['Hi.'<br/>'Hi, my name is Boris.']]></exchange>
+      <alias>Boris</alias>
+      <object name="boris_where_key">
+        <inherit name="editor_object" />
+        <inherit name="startingtopic" />
+        <alias>Where is the key?</alias>
+        <exchange>Where is the key?</exchange>
+      </object>
+      <object name="boris_teapot">
+        <inherit name="editor_object" />
+        <inherit name="startingtopic" />
+        <alias>Broken teapot</alias>
+        <exchange><![CDATA['What happened to the teapot?'<br/>'What teapot? I know nothing about no teapot. Anyway it was like that when I found it.']]></exchange>
+      </object>
+    </object>
   </object>
   <command name="break_teapot">
     <pattern>break teapot</pattern>
@@ -135,11 +166,11 @@
     <object name="philippa_nice_room">
       <inherit name="editor_object" />
       <inherit name="startingtopic" />
+      <alias>Nice room</alias>
       <talk type="script">
         msg ("'This is a nice room,' you say to Philippa.")
         msg ("'It's just like the other one!'")
       </talk>
-      <alias>Nice room</alias>
     </object>
   </object>
   <walkthrough name="test" />

@@ -9,7 +9,7 @@ If you are working off-line, you need to prepare your game to get it ready for u
 
 Go to the "Setup" tab of the game object, and check all the details are correct. This is information the web site will use to create an entry for your game, so check you have "Cover art" (this is the image people see when browsing the web site), select a category, an author; make sure you have a name and a description for your game.
 
-Save your game.
+Save your game. Close Quest. Re-open it. This will ensure that you have the most recent version of everything.
 
 Go to *Tool - Publish*. Quest will then produce a file called "My Great Game.quest", which you will find here:
 
@@ -54,6 +54,12 @@ Get some people to "beta test" your game. They *will* find problems.
 Upload you game again, and the old version will get over-written (but the values on the Setup tab of game do not get updated; they can however be edited through the web site). Test again. Once the game is perfect, set the game visibility to "Public" on the web site via the "Edit this listing" button.
 
 Now you can tell everyone about it!
+
+
+Versioning
+----------
+
+It is a good idea to give each version of your game a number that can be seen in game (in an ABOUT command perhaps). This will allow you to check which version you are playing when you upload a new one, and verify the uploaded version is the one you think it is.
 
 
 My Game Is Too Big!

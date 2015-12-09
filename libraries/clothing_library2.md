@@ -1,6 +1,6 @@
 ---
 layout: index
-title: Clothing Library2
+title: Clothing Library
 ---
 
 An advanced module for wearable items including a UI for editing wearable items in the editor.
