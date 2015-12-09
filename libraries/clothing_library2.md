@@ -3,7 +3,7 @@ layout: index
 title: Clothing Library
 ---
 
-An advanced module for wearable items including a UI for editing wearable items in the editor.
+An advanced, but easy to use, module for wearable items including a UI for editing wearable items in the editor.
 
 Contributed by: <span class="author">Chase</span>
 
@@ -19,7 +19,9 @@ With this library installed you will find a new tab 'wearable' in the object
 
 If you want to customize this library for other languages, open the file wearable.aslx with a texteditor and translate the templates.
 
-[Download](http://www.textadventures.co.uk/forum/viewtopic.php?f=10&t=2901#p19955)
+[Download]({{site.baseurl}}/files/wearables.aslx)
+
+[Discussion](http://www.textadventures.co.uk/forum/viewtopic.php?f=10&t=2901#p19955)
 
 #### Player Commands
 
