@@ -96,10 +96,12 @@ The "parent" Attribute
 
 An attribute you may well want to react to if it changes is the "parent" attribute, as this determines where an object is - what room it is currently in. You will find, however, that it already exists. You will need to click on "Make Editable Copy" to be able to do anything with it.
 
-If the object in question is not the "player" object and will never be the player, you can just delete the existing code, and put n your own. If this is the "player" object or can be the player, you will need to add your code to the end of the existing code.
+If the object in question is not the "player" object and will never be the player, you can just delete the existing code, and put n your own.
+
+If this is the "player" object or can be the player, you will need to add your code to the end of the existing code. That said, if you go to the Scripts tab of the game object, there is a script there that will run every time the player enters a room, and you probably better using this.
 
 
-The oldvalue variable
+The "oldvalue" variable
 ---------------------
 
 There is a special variable that holds the previous value of the attribute your change script is following, and this is called "oldvalue". A good example of that in use is the change script on the "parent" attribute that was just mentioned:

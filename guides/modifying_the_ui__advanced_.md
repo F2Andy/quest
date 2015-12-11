@@ -320,6 +320,16 @@ The reason is that there is an image there, and you need to get rid of that firs
 
     JS.eval ("$('#status').css('background-image', 'none')")
 
+    
+    
+Changing the "Game saved" Text Style
+------------------------------------
+
+By default (as of writing) the text saying the game has saved appears in the default text. To get it to appear in the right style, you need to change the style of *divOutput*. Here is an example:
+
+		JS.eval ("$('#divOutput').css('font-family', 'Bubblegum Sans');")
+		JS.eval ("$('#divOutput').css('color', 'Maroon');")
+    
 
 Other Tricks
 ------------
