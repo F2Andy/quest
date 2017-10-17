@@ -37,6 +37,14 @@
 
     <control>
       <controltype>textbox</controltype>
+      <attribute>cannotswitchon</attribute>
+      <caption>[EditorObjectOptionsCannotswitchon]</caption>
+      <nullable/>
+      <mustinherit>switchable</mustinherit>
+    </control>
+
+    <control>
+      <controltype>textbox</controltype>
       <attribute>switchedondesc</attribute>
       <caption>[EditorObjectOptionsExtraobject]</caption>
       <nullable/>
@@ -82,7 +90,7 @@
     <control>
       <controltype>textbox</controltype>
       <attribute>eatmsg</attribute>
-      <caption>[EditorObjectOptionsMessagetoprint]</caption>
+      <caption>[EditorObjectOptionsMessageEat]</caption>
       <nullable/>
       <mustinherit>edible</mustinherit>
     </control>
@@ -114,7 +122,7 @@
       <controltype>dropdown</controltype>
       <caption>[EditorObjectOptionsBrightness]</caption>
       <attribute>lightstrength</attribute>
-      <validvalues type="simplestringdictionary">weak=Weak (shown when room is dark); strong=Strong (illuminates room)</validvalues>
+      <validvalues type="simplestringdictionary">weak=[EditorWeakShownWhenRoomDark]; strong=[EditorStrongIlluminatesRoom]</validvalues>
       <onlydisplayif>GetBoolean(this, "lightsource")</onlydisplayif>
       <onlydisplayif>game.feature_lightdark</onlydisplayif>
     </control>
@@ -168,11 +176,28 @@
 
     <control>
       <mustinherit>editor_player</mustinherit>
+      <caption>[EditorObjectOptionsPossessive]</caption>
+      <controltype>textbox</controltype>
+      <attribute>pov_possessive</attribute>
+      <advanced/>
+    </control>
+
+    <control>
+      <mustinherit>editor_player</mustinherit>
       <caption>[EditorObjectOptionsOthernames]</caption>
       <controltype>list</controltype>
       <attribute>pov_alt</attribute>
       <editprompt>[EditorObjectOptionsPleaseenter]</editprompt>
       <advanced/>
+    </control>
+
+    <control>
+      <controltype>number</controltype>
+      <caption>[EditorObjectOptionsStartingmoney]</caption>
+      <attribute>money</attribute>
+      <width>100</width>
+      <minimum>0</minimum>
+      <onlydisplayif>game.showmoney</onlydisplayif>
     </control>
 
     <control>

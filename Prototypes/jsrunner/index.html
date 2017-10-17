@@ -2,36 +2,20 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=0.9" />
-	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/jquery-ui.min.js"></script>
+	<script src="lib/jquery-2.1.1.min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
     <script src="ui/jquery.jplayer.min.js"></script>
     <script src="ui/jquery.multi-open-accordion-1.5.3.js"></script>
-    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.1/themes/redmond/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="lib/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="ui/playercore.css" />
     <link rel="stylesheet" type="text/css" href="ui/player.css" />
     <script src="ui/playercore.js"></script>
     <script src="ui/player.js"></script>
     <script src="ui/playerweb.js"></script>
-    <script src="ui/paper.js"></script>
-    <script type="text/paperscript" src="ui/grid.js" canvas="gridCanvas"></script>
 	
-	<script src="jsep.min.js"></script>
-	<script src="quest.js"></script>
-	<script src="scripts.js"></script>
-	<script src="attributes.js"></script>
-	<script src="loader.js"></script>
-	<script src="ui.js"></script>
-
-	<script>
-		// quest.js will want a base url for image resources
-
-		var file = $_GET['file'] || 'test.aslx';
-
-		$.get(file, function (data) {
-			quest.load(data);
-			quest.begin();
-		});
-	</script>
+	<script src="browser-polyfill.min.js"></script>
+	<script src="asl4.js"></script>
+	<script data-main="quest" src="require.js"></script>
 </head>
 <body>
 	<div id="gameBorder">

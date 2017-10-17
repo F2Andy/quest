@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
-using WebInterfaces;
 
 namespace WebPlayer
 {
@@ -17,26 +17,45 @@ namespace WebPlayer
             public string SourceGameUrl { get; set; }
         }
 
-        public string GetFileForID(string id)
+        public async Task<SourceFileData> GetFileForID(string id)
         {
-            var game = Api.GetData<ApiGame>("api/game/" + id);
+            if (id.StartsWith("editor/"))
+            {
+                return new SourceFileData
+                {
+                    Filename = string.Format("https://textadventures.blob.core.windows.net/editorgames/{0}", id.Substring(7)),
+                    IsCompiled = false
+                };
+            }
+
+            var game = await Api.GetData<ApiGame>("api/game/" + id);
 
             if (game == null) return null;
 
-            return GetSourceGameUrl(game);
+            return new SourceFileData
+            {
+                Filename = GetSourceGameUrl(game),
+                IsCompiled = true
+            };
         }
 
         private static string GetSourceGameUrl(ApiGame game)
         {
             var gameFile = game.ASLVersion >= 500 ? "game.aslx" : System.IO.Path.GetFileName(game.OnlineRef);
-            return string.Format("http://textadventures.blob.core.windows.net/gameresources/{0}/{1}", game.UniqueId, gameFile);
+            return string.Format("https://textadventures.blob.core.windows.net/gameresources/{0}/{1}", game.UniqueId, gameFile);
         }
 
-        public static ApiGame GetGameData(string id)
+        public static async Task<ApiGame> GetGameData(string id)
         {
-            var result = Api.GetData<ApiGame>("api/game/" + id);
+            var result = await Api.GetData<ApiGame>("api/game/" + id);
             result.SourceGameUrl = GetSourceGameUrl(result);
             return result;
+        }
+
+        public static string GetResourceUrlRoot(string id)
+        {
+            if (!id.StartsWith("editor/")) return null;
+            return string.Format("https://textadventures.blob.core.windows.net/editorgames/{0}", id.Substring(7, id.LastIndexOf('/') - 6));
         }
     }
 }

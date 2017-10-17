@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CE40EC95-3D0D-4289-B71B-3CF204C4C050}"
 	ProjectSection(SolutionItems) = preProject
@@ -41,15 +41,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerController", "PlayerC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorControls", "EditorControls\EditorControls.csproj", "{4FE4228C-502B-47B7-A79B-79BEE6221C25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuestConsole", "QuestConsole\QuestConsole.csproj", "{5087E30D-95F3-49B6-B534-2EBA91C599CC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JawsApi", "JawsApi\JawsApi.csproj", "{B351E843-2BE4-4302-BD98-43D149185FB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebEditor", "WebEditor\WebEditor\WebEditor.csproj", "{79A63298-BF11-4C6B-A239-918C3BF81B6F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayerControllerTests", "PlayerControllerTests\PlayerControllerTests.csproj", "{B3C706FC-CC0B-4AC7-B233-90B552873787}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebInterfaces", "WebInterfaces\WebInterfaces.csproj", "{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UtilityTests", "UtilityTests\UtilityTests.csproj", "{69D2D258-4E82-404F-98A6-1E93EFAB9CDF}"
 EndProject
@@ -247,16 +243,6 @@ Global
 		{4FE4228C-502B-47B7-A79B-79BEE6221C25}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{4FE4228C-502B-47B7-A79B-79BEE6221C25}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4FE4228C-502B-47B7-A79B-79BEE6221C25}.Release|x86.ActiveCfg = Release|Any CPU
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Debug|x86.ActiveCfg = Debug|x86
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Debug|x86.Build.0 = Debug|x86
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Release|Any CPU.ActiveCfg = Release|x86
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Release|Mixed Platforms.Build.0 = Release|x86
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Release|x86.ActiveCfg = Release|x86
-		{5087E30D-95F3-49B6-B534-2EBA91C599CC}.Release|x86.Build.0 = Release|x86
 		{B351E843-2BE4-4302-BD98-43D149185FB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B351E843-2BE4-4302-BD98-43D149185FB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B351E843-2BE4-4302-BD98-43D149185FB7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -287,16 +273,6 @@ Global
 		{B3C706FC-CC0B-4AC7-B233-90B552873787}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B3C706FC-CC0B-4AC7-B233-90B552873787}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B3C706FC-CC0B-4AC7-B233-90B552873787}.Release|x86.ActiveCfg = Release|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{EAAFAF5A-3A08-440A-863A-D5FC79DBBCB7}.Release|x86.ActiveCfg = Release|Any CPU
 		{69D2D258-4E82-404F-98A6-1E93EFAB9CDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{69D2D258-4E82-404F-98A6-1E93EFAB9CDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69D2D258-4E82-404F-98A6-1E93EFAB9CDF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

@@ -21,40 +21,6 @@ document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
     $_GET[decode(arguments[1])] = decode(arguments[2]);
 });
 
-function init(url, gameSessionLogId) {
-    apiRoot = url;
-    $("#jquery_jplayer").jPlayer({ supplied: "wav, mp3" });
-    setInterval(keepSessionAlive, 60000);
-
-    $.ajax({
-        url: apiRoot + "games/cansave",
-        success: function (result) {
-            if (result) {
-                $("#cmdSave").show();
-            }
-        },
-        xhrFields: {
-            withCredentials: true
-        }
-    });
-
-    if (gameSessionLogId) {
-        $.ajax({
-            url: apiRoot + "games/startsession/?gameId=" + $_GET["id"] + "&blobId=" + gameSessionLogId,
-            success: function (result) {
-                if (result) {
-                    gameSessionLogData = result;
-                    setUpSessionLog();
-                }
-            },
-            type: "POST",
-            xhrFields: {
-                withCredentials: true
-            }
-        });
-    }
-}
-
 function setOutputBufferId(id) {
     outputBufferId = id;
     setUpSessionLog();
@@ -66,18 +32,11 @@ function setUpSessionLog() {
     }
 }
 
-function keepSessionAlive() {
-    $.post("KeepAlive.ashx");
-}
-
 var _waitingForSoundToFinish = false;
 
 function msgboxSubmit(text) {
     $("#msgbox").dialog("close");
-    window.setTimeout(function () {
-        $("#fldUIMsg").val("msgbox " + text);
-        $("#cmdSubmit").click();
-    }, 100);
+    quest.setQuestionResponse(text);
 }
 
 var _menuSelection = "";
@@ -123,10 +82,7 @@ function dialogSelect() {
     _menuSelection = $("#dialogOptions").val();
     if (_menuSelection.length > 0) {
         $("#dialog").dialog("close");
-        window.setTimeout(function () {
-            $("#fldUIMsg").val("choice " + _menuSelection);
-            $("#cmdSubmit").click();
-        }, 100);
+        quest.setMenuResponse(_menuSelection);
     }
 }
 
@@ -190,16 +146,10 @@ function stopTimer() {
     clearInterval(tmrTick);
 }
 
-var _submittingTimerTick = false;
-
 function timerTick() {
     tickCount++;
     if (sendNextGameTickerAfter > 0 && tickCount >= sendNextGameTickerAfter) {
-        $("#fldUITickCount").val(getTickCountAndStopTimer());
-        $("#fldUIMsg").val("tick");
-        _submittingTimerTick = true;
-        $("#cmdSubmit").click();
-        _submittingTimerTick = false;
+        quest.tick(getTickCountAndStopTimer());
     }
 }
 
@@ -219,9 +169,10 @@ function goUrl(href) {
 
 function saveGame() {
     window.setTimeout(function () {
-        var saveData = $("#divOutput").html().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        $("#fldUIMsg").val("save " + saveData);
-        $("#cmdSubmit").click();
+        var saveData = $("#divOutput").html();
+        quest.save(saveData, function (data) {
+            saveGameResponse(btoa(data));
+        });
     }, 100);
 }
 

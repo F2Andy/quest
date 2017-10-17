@@ -10,6 +10,8 @@ var verbButtonCount = 9;
 var beginningOfCurrentTurnScrollPosition = 0;
 
 $(function () {
+    $("#jquery_jplayer").jPlayer({ supplied: "wav, mp3" });
+    
     $("#txtCommand").bind("inview", function (event, visible) {
         // allows spacebar to scroll browser when txtCommand is not visible
         if (visible == true) {
@@ -124,16 +126,16 @@ $(function () {
     ui_init();
     updateStatusVisibility();
 
-    var overrideContextMenuClick = function(e) {
-        if (!e) e = window.event;
-        if ((e.type && e.type == "contextmenu") || (e.button && e.button == 2) || (e.which && e.which == 3)) {
-            return false;
-        }
-        return true;
-    };
-    if (document.layers) document.captureEvents(Event.MOUSEDOWN);
-    document.onmousedown = overrideContextMenuClick;
-    document.oncontextmenu = overrideContextMenuClick;
+    // var overrideContextMenuClick = function(e) {
+    //     if (!e) e = window.event;
+    //     if ((e.type && e.type == "contextmenu") || (e.button && e.button == 2) || (e.which && e.which == 3)) {
+    //         return false;
+    //     }
+    //     return true;
+    // };
+    // if (document.layers) document.captureEvents(Event.MOUSEDOWN);
+    // document.onmousedown = overrideContextMenuClick;
+    // document.oncontextmenu = overrideContextMenuClick;
 
     $("#txtCommand").focus();
 });
@@ -396,8 +398,7 @@ function hideBorder() {
 
 var _compassDirs = ["northwest", "north", "northeast", "west", "east", "southwest", "south", "southeast", "up", "down", "in", "out"];
 
-function updateCompass(listData) {
-    var directions = listData.split("/");
+function updateCompass(directions) {
     updateDir(directions, "NW", _compassDirs[0]);
     updateDir(directions, "N", _compassDirs[1]);
     updateDir(directions, "NE", _compassDirs[2]);
@@ -502,8 +503,7 @@ function updateList(listName, listData) {
 
     $(listElement).empty();
     var count = 0;
-    $.each(listData, function (key, value) {
-        var data = JSON.parse(value);
+    $.each(listData, function (key, data) {
         var objectDisplayName = data["Text"];
         var verbsArray, idPrefix;
 
@@ -560,10 +560,12 @@ function updateVerbButtons(selectedItem, verbsArray, idprefix) {
 }
 
 function beginWait() {
-    _waitMode = true;
-    $("#txtCommand").hide();
-    $("#endWaitLink").show();
-    markScrollPosition();
+    setTimeout(function () {
+        _waitMode = true;
+        $("#txtCommand").hide();
+        $("#endWaitLink").show();
+        markScrollPosition();
+    }, 1);
 }
 
 function endWait() {
@@ -1027,10 +1029,6 @@ $(function () {
 
 // gridApi is global for interop between PaperScript and JavaScript - a workaround until
 // this tutorial exists: http://paperjs.org/tutorials/getting-started/paperscript-interoperability/
-
-window.gridApi = {};
-window.gridApi.onLoad = function () {
-};
 
 _canvasSupported = (window.HTMLCanvasElement);
 

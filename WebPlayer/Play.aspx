@@ -1,15 +1,15 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Play.aspx.cs" Inherits="WebPlayer.Play" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Play.aspx.cs" Inherits="WebPlayer.Play" Async="true" %>
 
 <!DOCTYPE html>
 <html>
 <head runat="server">
     <!-- <% Response.Write(GetVersionHeader()); %> -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=0.9" />
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
     <script type="text/javascript" src="js/jquery.multi-open-accordion-1.5.3.js"></script>
-    <link rel="Stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.1/themes/redmond/jquery-ui.min.css" />
+    <link rel="Stylesheet" type="text/css" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.1/themes/redmond/jquery-ui.min.css" />
     <link rel="Stylesheet" type="text/css" href="<%= CacheBuster("playercore.css") %>" />
     <link rel="Stylesheet" type="text/css" href="<%= CacheBuster("player.css") %>" />
     <script type="text/javascript" src="<%= CacheBuster("playercore.js") %>"></script>
@@ -17,10 +17,8 @@
     <script type="text/javascript" src="<%= CacheBuster("playerweb.js") %>"></script>
     <script type="text/javascript" src="paper.js"></script>
     <script type="text/paperscript" src="<%= CacheBuster("grid.js") %>" canvas="gridCanvas"></script>
-    <% Response.Write(GetHead()); %>
 </head>
 <body onload="init('<%= ApiRoot() %>', '<%= GameSessionLogId() %>');">
-    <% Response.Write(GetBodyHeader()); %>
     <div style="display: none">
         <form id="playerform" runat="server" defaultbutton="cmdSubmit">
             <asp:ScriptManager ID="ctlScriptManager" runat="server">
@@ -49,6 +47,5 @@
     </div>
     <div id="audio_embed">
     </div>
-    <% Response.Write(GetBodyFooter()); %>
 </body>
 </html>

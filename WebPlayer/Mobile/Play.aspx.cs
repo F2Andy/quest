@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Configuration;
 using TextAdventures.Utility.JSInterop;
-using WebInterfaces;
+using System.Threading.Tasks;
 
 namespace WebPlayer.Mobile
 {
@@ -66,7 +66,7 @@ namespace WebPlayer.Mobile
             }
         }
 
-        protected void InitTimerTick(object sender, EventArgs e)
+        protected async void InitTimerTick(object sender, EventArgs e)
         {
             if (m_buffer == null) return;
             m_buffer.InitStage++;
@@ -74,7 +74,7 @@ namespace WebPlayer.Mobile
             switch (m_buffer.InitStage)
             {
                 case 1:
-                    string initialText = LoadGameForRequest();
+                    string initialText = await LoadGameForRequest();
                     if (m_player == null)
                     {
                         tmrInit.Enabled = false;
@@ -96,11 +96,12 @@ namespace WebPlayer.Mobile
             }
         }
 
-        private string LoadGameForRequest()
+        private async Task<string> LoadGameForRequest()
         {
             string folder = null;
             string gameFile = Request["file"];
             string id = Request["id"];
+            bool? isCompiled = null;
 
             if (string.IsNullOrEmpty(gameFile))
             {
@@ -109,7 +110,9 @@ namespace WebPlayer.Mobile
                     IFileManager fileManager = FileManagerLoader.GetFileManager();
                     if (fileManager != null)
                     {
-                        gameFile = fileManager.GetFileForID(id);
+                        var result = await fileManager.GetFileForID(id);
+                        gameFile = result.Filename;
+                        isCompiled = result.IsCompiled;
                     }
                 }
             }
@@ -121,17 +124,17 @@ namespace WebPlayer.Mobile
 
             if (loadData != null)
             {
-                apiGameData = AzureFileManager.GetGameData(id);
+                apiGameData = await AzureFileManager.GetGameData(id);
                 if (apiGameData == null)
                 {
                     throw new InvalidOperationException("No API data returned for game id " + id);
                 }
             }
 
-            return LoadGame(gameFile, id, folder, loadData, apiGameData);
+            return LoadGame(gameFile, isCompiled, id, folder, loadData, apiGameData);
         }
 
-        private string LoadGame(string gameFile, string id, string folder, string loadData, AzureFileManager.ApiGame apiGameData)
+        private string LoadGame(string gameFile, bool? isCompiled, string id, string folder, string loadData, AzureFileManager.ApiGame apiGameData)
         {
             if (string.IsNullOrEmpty(gameFile) && loadData == null)
             {
@@ -172,8 +175,12 @@ namespace WebPlayer.Mobile
                 m_player.AddResource += AddResource;
                 m_player.PlayAudio += m_player_PlayAudio;
                 m_player.StopAudio += m_player_StopAudio;
-                
-                if (m_player.Initialise(out errors))
+                if (Config.ReadGameFileFromAzureBlob)
+                {
+                    m_player.ResourceUrlRoot = AzureFileManager.GetResourceUrlRoot(id);
+                }
+
+                if (m_player.Initialise(out errors, isCompiled))
                 {
                     Resources.AddGame(m_player.Game);
 
@@ -225,7 +232,7 @@ namespace WebPlayer.Mobile
 
             if (functionName == null) return;
 
-            string url = AddResource(e.GameId, e.Filename);
+            string url = m_player.GetURL(e.Filename);
             
             m_buffer.AddJavaScriptToBuffer(
                 functionName,
@@ -241,13 +248,6 @@ namespace WebPlayer.Mobile
 
         string AddResource(string gameId, string filename)
         {
-            if (Config.ReadGameFileFromAzureBlob)
-            {
-                return string.Format("http://textadventures.blob.core.windows.net/gameresources/{0}/{1}",
-                gameId,
-                filename);
-            }
-
             return "../Resource.ashx?id=" + gameId + "&filename=" + filename;
         }
 
@@ -373,36 +373,6 @@ namespace WebPlayer.Mobile
         {
             get { return Session["OutputBuffers"] as Dictionary<string, OutputBuffer>; }
             set { Session["OutputBuffers"] = value; }
-        }
-
-        protected string GetHead()
-        {
-            IHTMLManager htmlManager = HTMLManagerLoader.GetHTMLManager();
-            if (htmlManager != null)
-            {
-                return htmlManager.GetHead();
-            }
-            return null;
-        }
-
-        protected string GetBodyHeader()
-        {
-            IHTMLManager htmlManager = HTMLManagerLoader.GetHTMLManager();
-            if (htmlManager != null)
-            {
-                return htmlManager.GetBodyHeader();
-            }
-            return null;
-        }
-
-        protected string GetBodyFooter()
-        {
-            IHTMLManager htmlManager = HTMLManagerLoader.GetHTMLManager();
-            if (htmlManager != null)
-            {
-                return htmlManager.GetBodyFooter();
-            }
-            return null;
         }
 
         protected string ApiRoot()

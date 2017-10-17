@@ -22,7 +22,7 @@
               desc = AddDescriptionLine (desc, "<b>" + CapFirst(GetDisplayName(game.pov.parent)) + "</b>")
             }
             if (game.autodescription_youarein_newline) {
-              msg (desc)
+              msg (desc + "<br/>")
               desc = ""
             }
           }
@@ -31,7 +31,7 @@
             desc = AddDescriptionLine(desc, objects)
             
             if (game.autodescription_youcansee_newline) {
-              msg (desc)
+              msg (desc + "<br/>")
               desc = ""
             }
           }
@@ -40,7 +40,7 @@
             desc = AddDescriptionLine(desc, exits)
             
             if (game.autodescription_youcango_newline) {
-              msg (desc)
+              msg (desc + "<br/>")
               desc = ""
             }
           }
@@ -58,7 +58,7 @@
             else  {
               desc = AddDescriptionLine(desc, GetRoomDescription())
               if (game.autodescription_description_newline) {
-                msg (desc)
+                msg (desc + "<br/>")
                 desc = ""
               }
             }
@@ -107,6 +107,8 @@
           fulldesc = game.pov.parent.darkroomdescription
         }
       }
+      // Added by The Pixie to correct what appears to be a bug
+      if (fulldesc = "") fulldesc = DynamicTemplate("LookAtDarkness", game.pov.parent)
     }
     else {
        if (HasString(game.pov.parent, "description")) {
@@ -135,6 +137,13 @@
     game.displayroomdescriptiononstart = false
     if (IsDefined("oldRoom")) {
       if (oldRoom <> null) {
+        if (game.clearscreenonroomenter) {
+          ClearScreen
+          if (not game.currentexitmessage = null) {
+            msg(game.currentexitmessage)
+            game.currentexitmessage = null
+          }
+        }
         if (HasScript(oldRoom, "onexit")) {
           do (oldRoom, "onexit")
         }

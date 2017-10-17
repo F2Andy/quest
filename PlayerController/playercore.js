@@ -289,11 +289,12 @@ function isElementVisible(element) {
 function panesVisible(visible) {
     var screenWidth = $("#gameBorder").width();
     var gameContentPadding = parseInt($("#gameContent").css("padding-left").replace("px", "")) + parseInt($("#gameContent").css("padding-right").replace("px", ""));
+    var promptSpacing = $("#txtCommandPrompt").width() + 5;
 
     if (visible) {
         $("#gamePanes").show();
         $("#gameContent").width(screenWidth - 250);
-        $("#txtCommand").width(screenWidth - gameContentPadding - 230);
+        $("#txtCommand").width(screenWidth - gameContentPadding - promptSpacing - 250);
         $("#updating").css("margin-left", (screenWidth / 2 - 290) + "px");
         $("#gamePanel").width(screenWidth - 250);
         $("#gridPanel").width(screenWidth - 250);
@@ -307,7 +308,7 @@ function panesVisible(visible) {
     else {
         $("#gamePanes").hide();
         $("#gameContent").width(screenWidth - gameContentPadding);
-        $("#txtCommand").width(screenWidth - 60);
+        $("#txtCommand").width(screenWidth - promptSpacing - 60);
         $("#updating").css("margin-left", (screenWidth / 2 - 70) + "px");
         $("#gamePanel").width(screenWidth - 40);
         $("#gridPanel").width(screenWidth - 40);
@@ -330,9 +331,14 @@ function scrollToEnd() {
         if (scrollTo > maxScrollTop) scrollTo = maxScrollTop;
         var distance = scrollTo - currentScrollTop;
         var duration = _animateScroll ? distance / 0.4 : 1;
+        // Added by The Pixie on behalf of alexandretorres
+        if (duration>2000) duration=2000;
         $("body,html").stop().animate({ scrollTop: scrollTo }, duration, "easeInOutCubic");
     }
     $("#txtCommand").focus();
+    // Added by The Pixie; this is a fall back, as the above seems not to work on some browsers
+    // In fact it may be the all the rest of this can deleted
+    $('html,body').animate({ scrollTop: document.body.scrollHeight }, 'fast');
 }
 
 function SetAnimateScroll(value) {
@@ -455,7 +461,11 @@ function setForeground(col) {
 }
 
 function setCompassDirections(directions) {
-    _compassDirs = directions;
+    if (typeof directions === "string") {
+      _compassDirs = directions.split(";")
+    } else {
+      _compassDirs = directions;
+    }
     $("#cmdCompassNW").attr("title", _compassDirs[0]);
     $("#cmdCompassN").attr("title", _compassDirs[1]);
     $("#cmdCompassNE").attr("title", _compassDirs[2]);
@@ -790,39 +800,15 @@ function setInterfaceString(name, text) {
     }
 }
 
-function CheckFlashAndShowMsg() {
-    var hasFlash = false;
-    try {
-        //IE 7
-        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-        if (fo)
-            hasFlash = true;
-    } catch (e) {
-        //IE 8+, and all other modern browsers
-        if (navigator.mimeTypes["application/x-shockwave-flash"] != undefined)
-            hasFlash = true;
-    }
-
-    if (!hasFlash)
-        addText("<b><i>You must install <a href=\"http://get.adobe.com/flashplayer/\" target=\"_blank\">Adobe Flash Player</a> for Internet Explorer for videos to work.</i></b>");
-
-    return hasFlash;
-}
-
 function AddYouTube(id) {
-    if (!CheckFlashAndShowMsg())
-        return;
-
-    var url = "http://www.youtube.com/v/" + id + "?version=3&autoplay=1";
-    var embedHTML = "<object width=\"425\" height=\"344\"><param name=\"movie\" value=\"" + url + "\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><param name=\"wmode\" value=\"transparent\"></param><embed wmode=\"transparent\" src=\"" + url + "\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"425\" height=\"344\"></embed></object>";
+    var url = "https://www.youtube.com/embed/" + id + "?autoplay=1&rel=0";
+    var embedHTML = "<iframe width=\"425\" height=\"344\" src=\"" + url + "\" frameborder=\"0\" allowfullscreen></iframe>";
     addText(embedHTML);
 }
 
 function AddVimeo(id) {
-    if (!CheckFlashAndShowMsg())
-        return;
-
-    var embedHTML = "<object width=\"400\" height=\"225\"><param name=\"allowfullscreen\" value=\"true\" /><param name=\"allowscriptaccess\" value=\"always\" /><param name=\"movie\" value=\"http://vimeo.com/moogaloop.swf?clip_id=" + id + "&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=00adef&amp;fullscreen=1&amp;autoplay=1&amp;loop=0\" /><param name=\"wmode\" value=\"transparent\"></param><embed wmode=\"transparent\" src=\"http://vimeo.com/moogaloop.swf?clip_id=" + id + "&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=00adef&amp;fullscreen=1&amp;autoplay=1&amp;loop=0\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowscriptaccess=\"always\" width=\"400\" height=\"225\"></embed></object>";
+    var url = "https://player.vimeo.com/video/" + id + "?autoplay=1";
+    var embedHTML = "<iframe sandbox=\"allow-same-origin allow-scripts allow-popups\" src=\"" + url + "\" width=\"500\" height=\"281\" frameborder=\"0\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
     addText(embedHTML);
 }
 
@@ -887,6 +873,9 @@ function HideOutputSection(name) {
     $("." + name + " a").attr("onclick", "");
     setTimeout(function() {
         $("." + name).hide(250, function () { $(this).remove(); });
+        // Added by The Pixie, 04/Oct/17
+        // This should close the gap when the menu is hidden
+        $("#divOutput").animate({'min-height':0}, 250);
     }, 250);
 }
 
@@ -961,30 +950,38 @@ function getCSSRule(ruleName, deleteFlag) {
             var styleSheet = document.styleSheets[i];
             var ii = 0;
             var cssRule = false;
-            do {
-                if (styleSheet.cssRules) {
-                    cssRule = styleSheet.cssRules[ii];
-                } else if (styleSheet.rules) {
-                    cssRule = styleSheet.rules[ii];
-                }
-                if (cssRule) {
-                    if (typeof cssRule.selectorText != "undefined") {
-                        if (cssRule.selectorText.toLowerCase() == ruleName) {
-                            if (deleteFlag == 'delete') {
-                                if (styleSheet.cssRules) {
-                                    styleSheet.deleteRule(ii);
+            try {
+                do {
+                    if (styleSheet.cssRules) {
+                        cssRule = styleSheet.cssRules[ii];
+                    } else if (styleSheet.rules) {
+                        cssRule = styleSheet.rules[ii];
+                    }
+                    if (cssRule) {
+                        if (typeof cssRule.selectorText != "undefined") {
+                            if (cssRule.selectorText.toLowerCase() == ruleName) {
+                                if (deleteFlag == 'delete') {
+                                    if (styleSheet.cssRules) {
+                                        styleSheet.deleteRule(ii);
+                                    } else {
+                                        styleSheet.removeRule(ii);
+                                    }
+                                    return true;
                                 } else {
-                                    styleSheet.removeRule(ii);
+                                    return cssRule;
                                 }
-                                return true;
-                            } else {
-                                return cssRule;
                             }
                         }
                     }
+                    ii++;
+                } while (cssRule)
+            } catch (e) {
+                // Firefox throws a SecurityError if you try reading
+                // a cross-domain stylesheet
+                if (e.name !== "SecurityError") {
+                    throw e;
                 }
-                ii++;
-            } while (cssRule)
+            }
         }
     }
     return false;
@@ -1016,6 +1013,122 @@ function ShowGrid(height) {
     $("#gamePanelSpacer").height(height);
 }
 
+
+// ----------------------------------        
+// Section added by The Pixie
+
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
+function setCss(element, cssString) {
+  el = $(element);
+  ary = cssString.split(";");
+  for (i = 0; i < ary.length; i++) {
+    ary2 = ary[i].split(':');
+    el.css(ary2[0], ary2[1]);
+  }
+}
+
+function addScript(text) {
+    $('body').prepend(text);
+}
+
+function colourBlend(colour1, colour2) {
+  $('#gamePanes').css('background-color', 'transparent');
+  $('#gameBorder').css('background-color', 'transparent');
+  body = $('body');
+  body.css('background-color', colour1);
+  body.css('background-image', 'linear-gradient(to bottom,  ' + colour1 + ', ' + colour2 + ')');
+  body.css('background-image', '-webkit-linear-gradient(top,  ' + colour1 + ', ' + colour2 + ')');
+  body.css('background-attachment', 'fixed');
+  body.css('background-position', 'left bottom');
+}
+
+
+
+elements = [
+  '#statusVarsLabel', '#statusVarsAccordion',// '#statusVars',
+  '#inventoryLabel', '#inventoryAccordion', '#inventoryAccordion.ui-widget-content',
+  '#placesObjectsLabel', '#placesObjectsAccordion', '#placesObjectsAccordion.ui-widget-content',
+  '#compassLabel', '#compassAccordion', '.ui-button', //'.ui-button-text',
+  '#commandPane', '#customStatusPane'
+];
+
+dirs = ['N', 'E', 'S', 'W', 'NW', 'NE', 'SW', 'SE', 'U', 'In', 'D', 'Out'];
+
+commandColour = 'orange'
+
+function setElement(name, fore, back) {
+  el = $(name);
+  el.css('background', back);
+  el.css('color', fore);
+  el.css('border', 'solid 1px ' + fore);
+  if (endsWith(name, "Accordion")) {
+    el.css('border-top', 'none');
+  }
+}
+
+function setCompass(name, fore, back) {
+  el = $('#cmdCompass' + name);
+  el.css('background', back);
+  el.css('border', '2px solid ' + fore);
+}
+
+function setPanes(fore, back, secFore, secBack, highlight) {
+  if (arguments.length == 2) {
+    secFore = back;
+    secBack = fore;
+  }
+  if (arguments.length < 5) {
+    highlight = 'orange'
+  }
+  commandColour = fore;
+  for (i = 0; i < elements.length; i++) {
+    setElement(elements[i], fore, back);
+  }
+  for (i = 0; i < dirs.length; i++) {
+    setElement(dirs[i], fore, back);
+  }
+
+  var head = $('head');
+  head.append('<style>.ui-button-text { color: ' + fore + ';}</style>');
+  head.append('<style>.ui-state-active { color: ' + fore + ';}</style>');
+  head.append('<style>.ui-widget-content { color: ' + fore + ';}</style>');
+  head.append('<style>.ui-widget-header .ui-state-default { background-color: ' + secBack + ';}</style>');
+  head.append('<style>.ui-selecting { color: ' + secFore + '; background-color: ' + highlight + ';}</style>');
+  head.append('<style>.ui-selected { color: ' + secFore + '; background-color: ' + secBack + ';}</style>');
+
+  //$('.ui-button-text').css('color', fore);
+  //$('.ui-state-active').css('color', fore);
+  //$('.ui-widget-content').css('color', fore);
+  
+}
+
+function setCommands(s, colour) {
+  if (arguments.length == 2) commandColour = colour;
+  ary = s.split(";");
+  el = $('#commandPaneHeading');
+  el.empty();
+  for (i = 0; i < ary.length; i++) {
+      ary2 = ary[i].split(":");
+      comm = ary2[0];
+      commLower = ary2[0].toLowerCase().replace(/ /g, "_");
+      commComm = (ary2.length == 2 ? ary2[1] : ary2[0]).toLowerCase();
+      //alert("ary[i]=" + ary[i] + ", Comm=" + comm + ", commComm=" + commComm + ", ary2[0].length=" + ary2.length);
+      el.append(' <span id="' + commLower + '_command_button"  class="accordion-header-text" style="padding:5px;"><a id="verblink' + commLower + '" class="cmdlink commandlink" style="text-decoration:none;color:' + commandColour + ';font-size:12pt;" data-elementid="" data-command="' + commComm + '">' + comm + '</a></span> ');
+  }
+}
+
+function setCustomStatus(s) {
+    el = $('#customStatusPane');
+    el.html(s);
+}
+
+        
+// ----------------------------------        
+        
+        
 $(function () {
     $("#gridPanel").mousewheel(function (e, delta) {
         gridApi.zoomIn(delta);
@@ -1064,9 +1177,10 @@ function Grid_DrawPlayer(x, y, z, radius, border, borderWidth, fill) {
     gridApi.drawPlayer(parseFloat(x), parseFloat(y), parseFloat(z), parseInt(radius), border, parseInt(borderWidth), fill);
 }
 
-function Grid_DrawLabel(x, y, z, text) {
+function Grid_DrawLabel(x, y, z, text, col) {
+    if (col === undefined) col = "black";
     if (!_canvasSupported) return;
-    gridApi.drawLabel(parseFloat(x), parseFloat(y), parseFloat(z), text);
+    gridApi.drawLabel(parseFloat(x), parseFloat(y), parseFloat(z), text, col);
 }
 
 function Grid_ShowCustomLayer(visible) {

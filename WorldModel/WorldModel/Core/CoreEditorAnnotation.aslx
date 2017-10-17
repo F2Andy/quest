@@ -1,0 +1,30 @@
+<library>
+  <tab>
+    <parent>_ObjectEditor</parent>
+    <caption>[EditorObjectAnnotationAnnotation]</caption>
+    <mustinherit>editor_room</mustinherit>
+    <onlydisplayif>game.feature_annotations</onlydisplayif>
+
+    <control>
+      <controltype>richtext</controltype>
+      <attribute>implementation_notes</attribute>
+      <notextprocessor/>
+      <expand/>
+    </control>
+  </tab>    
+
+  
+  
+  <tab>
+    <parent>_ObjectEditor</parent>
+    <caption>[EditorObjectStartscriptStartscript]</caption>
+    <mustnotinherit>editor_room</mustnotinherit>
+    <onlydisplayif>this.feature_startscript</onlydisplayif>
+
+    <control>
+      <controltype>script</controltype>
+      <caption>[EditorObjectScriptsInitial]</caption>
+      <attribute>_initialise_</attribute>
+    </control>
+  </tab>    
+</library>

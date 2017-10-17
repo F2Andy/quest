@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
+using log4net.Config;
+using log4net.Core;
 
 namespace WebEditor
 {
@@ -11,10 +14,25 @@ namespace WebEditor
 
         static Logging()
         {
-            string logConfig = System.Configuration.ConfigurationManager.AppSettings["LogConfig"];
+            if (ConfigurationManager.AppSettings["AzureLogTable"] != null)
+            {
+                Level minLogLevel = null;
+
+                var minLogLevelName = ConfigurationManager.AppSettings["LogLevel"];
+                if (minLogLevelName != null)
+                {
+                    var map = LoggerManager.GetAllRepositories().First().LevelMap;
+                    minLogLevel = map[minLogLevelName];
+                }
+
+                BasicConfigurator.Configure(new TableStorageAppender(minLogLevel));
+                return;
+            }
+
+            string logConfig = ConfigurationManager.AppSettings["LogConfig"];
             if (!string.IsNullOrEmpty(logConfig))
             {
-                log4net.Config.XmlConfigurator.Configure(new System.IO.FileInfo(logConfig));
+                XmlConfigurator.Configure(new System.IO.FileInfo(logConfig));
             }
         }
 

@@ -1,5 +1,7 @@
 <asl version="550">
     <game name="Test Game">
+        <testattr>Test attribute value</testattr>
+        <testattr2>Test another attribute value</testattr2>
     </game>
 
     <function name="ScopeInventory" type="objectlist">
@@ -34,6 +36,16 @@
         else if (command = "js") {
             JS.alert ("Hello world!")
         }
+        else if (command = "invoke") {
+            scriptfn (2) {
+                msg ("This was passed as a script argument.")
+            }
+        }
+        else if (command = "for") {
+            for (i, 1, 10) {
+                msg (i)
+            }
+        }
         else {
             msg (command)
         }
@@ -46,6 +58,7 @@
     <function name="StartGame">
         Testing(123, 456)
         Test2()
+        TestAttributes()
     </function>
     
     <function name="Testing" parameters="value1, value2">
@@ -54,6 +67,12 @@
     
     <function name="Test2">
         msg ("Welcome")
+    </function>
+    
+    <function name="TestAttributes">
+        msg ("Test attributes...")
+        msg ("game.testattr = " + game.testattr)
+        msg ("game.testattr2 = " + game.testattr2)
     </function>
     
     <function name="testfn" parameters="arg1, arg2" type="int">
@@ -67,5 +86,12 @@
     
     <function name="nestfn" parameters="arg" type="int">
         return (arg + 1)
+    </function>
+    
+    <function name="scriptfn" parameters="arg, script">
+        msg ("arg: " + arg)
+        msg ("running script...")
+        invoke (script)
+        msg ("done invoke")
     </function>
 </asl>

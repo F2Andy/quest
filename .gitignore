@@ -1,4 +1,6 @@
-.settings/
+asl4.js
+browser-polyfill.min.js
+.vs/
 node_modules/
 [Bb]in/
 obj/
@@ -7,7 +9,8 @@ obj/
 TestResults/
 *.suo
 *.user
-packages/*
+*.map
+packages/
 WebPlayer/playercore\..*
 WebPlayer/WebPlayerSettings\.xml
 WebPlayer/WebPlayer\.Publish\.xml
@@ -15,6 +18,7 @@ Setup/Setup/
 WebPlayer/LogConfig.xml
 WebEditor/WebEditor/WebEditorSettings.xml
 WebPlayer/App_Data/Log.txt
+WebPlayer/App_Data/51Degrees.dat
 WebEditor/WebEditor/WebEditor.Publish.xml
 WebEditor/WebEditor/LogConfig.xml
 WebPlayer/paper.js

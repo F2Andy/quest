@@ -482,11 +482,11 @@ namespace TextAdventures.Quest
             if (m_playerUI != null) m_playerUI.UpdateGameName(name);
         }
 
-        public bool Initialise(IPlayer player)
+        public bool Initialise(IPlayer player, bool? isCompiled = null)
         {
             m_editMode = false;
             m_playerUI = player;
-            GameLoader loader = new GameLoader(this, GameLoader.LoadMode.Play);
+            GameLoader loader = new GameLoader(this, GameLoader.LoadMode.Play, isCompiled);
             bool result = InitialiseInternal(loader);
             if (result)
             {
@@ -1020,7 +1020,7 @@ namespace TextAdventures.Quest
                 webFontsInUse.Add(defaultWebFont);
             }
             
-            var result = webFontsInUse.Select(f => "http://fonts.googleapis.com/css?family=" + f.Replace(' ', '+'));
+            var result = webFontsInUse.Select(f => "https://fonts.googleapis.com/css?family=" + f.Replace(' ', '+'));
             
             return result;
         }
@@ -1394,8 +1394,17 @@ namespace TextAdventures.Quest
 
         private void DoInNewThreadAndWait(Action routine)
         {
+            Action wrappedRoutine = () =>
+            {
+                try
+                {
+                    routine();
+                }
+                catch { }
+            };
+
             ChangeThreadState(ThreadState.Working);
-            Thread newThread = new Thread(new ThreadStart(routine));
+            Thread newThread = new Thread(new ThreadStart(wrappedRoutine));
             newThread.Start();
             WaitUntilFinishedWorking();
         }
@@ -1644,10 +1653,16 @@ namespace TextAdventures.Quest
             }
         }
 
-        public bool CreatePackage(string filename, bool includeWalkthrough, out string error)
+        public class PackageIncludeFile
+        {
+            public string Filename { get; set; }
+            public Stream Content { get; set; }
+        }
+
+        public bool CreatePackage(string filename, bool includeWalkthrough, out string error, IEnumerable<PackageIncludeFile> includeFiles, Stream outputStream)
         {
             Packager packager = new Packager(this);
-            return packager.CreatePackage(filename, includeWalkthrough, out error);
+            return packager.CreatePackage(filename, includeWalkthrough, out error, includeFiles, outputStream);
         }
 
         public string ResourcesFolder { get; internal set; }
@@ -1746,6 +1761,7 @@ namespace TextAdventures.Quest
                 var url = GetExternalURL(filename);
                 using (var client = new WebClient())
                 {
+                    client.Encoding = System.Text.Encoding.UTF8;
                     return client.DownloadString(url);
                 }
             }
@@ -1787,7 +1803,13 @@ namespace TextAdventures.Quest
             get
             {
                 string gameId = m_game.Fields[FieldDefinitions.GameID];
-                return gameId ?? TextAdventures.Utility.Utility.FileMD5Hash(m_filename);
+                if (gameId != null) return gameId;
+                if (Config.ReadGameFileFromAzureBlob)
+                {
+                    var parts = m_filename.Split('/');
+                    return parts[parts.Length - 2];
+                }
+                return TextAdventures.Utility.Utility.FileMD5Hash(m_filename);
             }
         }
         public string Category { get { return m_game.Fields[FieldDefinitions.Category]; } }

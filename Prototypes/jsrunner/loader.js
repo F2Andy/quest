@@ -1,35 +1,41 @@
-/* global quest */
-
-(function () {
-    window.quest = window.quest || {};
-    
+define(['state', 'scripts'], function (state, scripts) {   
     var allowedVersions = [500, 510, 520, 530, 540, 550];
     
-    var getAttribute = function (node, attributeName) {
+    var getXmlAttribute = function (node, attributeName) {
         var attribute = node.attributes[attributeName];
         if (!attribute) return null;
         return attribute.value;
     };
     
+    var loadElementAttributes = function (element, nodes) {
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].nodeType !== 1) continue;
+            var attributeName = nodes[i].nodeName;
+            var attributeValue = nodes[i].textContent; 
+            state.set(element, attributeName, attributeValue);
+        }
+    };
+    
     var loaders = {
         'game': function (node) {
-            quest.create('game');
-            var name = getAttribute(node, 'name');
-            quest.set('game', 'name', name);
+            state.create('game');
+            var name = getXmlAttribute(node, 'name');
+            state.set('game', 'name', name);
+            loadElementAttributes('game', node.childNodes);
         },
         'function': function (node) {
             var paramList;
-            var parameters = getAttribute(node, 'parameters');
+            var parameters = getXmlAttribute(node, 'parameters');
             if (parameters) {
                 paramList = parameters.split(/, ?/);
             }
-            quest.addFunction(getAttribute(node, 'name'),
-                quest.parseScript(node.textContent),
+            state.addFunction(getXmlAttribute(node, 'name'),
+                scripts.parseScript(node.textContent),
                 paramList);
         }
     };
     
-    quest.load = function (data) {
+    var load = function (data) {
         var parser = new DOMParser();
         var doc = parser.parseFromString(data, 'application/xml');
         var firstNode = 0;
@@ -40,7 +46,6 @@
             }
         }
         var asl = doc.childNodes[firstNode];
-        window.asl = asl;
         if (asl.nodeName !== 'asl') {
             throw 'File must begin with an ASL element';
         }
@@ -64,6 +69,10 @@
             }
         }
         
-        quest.dump();
+        state.dump();
     };
-})();
+    
+    return {
+        load: load
+    };
+});
